@@ -12,5 +12,10 @@
       <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
     </activity>
     <service android:name="com.google.firebase.messaging.MessageForwardingService" android:exported="false" />
+    <provider
+      android:name="com.yasirkula.unity.NativeCameraContentProvider"
+      android:authorities="unity.sushizanmai.spajam"
+      android:exported="false"
+      android:grantUriPermissions="true" />
   </application>
 </manifest>
