@@ -426,6 +426,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Name: 
+  m_EditorClassIdentifier: 
   BaseUrl: http://api.openweathermap.org/data/2.5/weather
   ApiKey: 73c1dd52d7bac9af74f5d2fbd1f03244
   TimeOutSeconds: 10
@@ -1139,6 +1145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1713682745}
   - component: {fileID: 1713682744}
+  - component: {fileID: 1713682746}
   m_Layer: 0
   m_Name: GameObject (2)
   m_TagString: Untagged
@@ -1153,7 +1160,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713682743}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3824bfc538b6144a871d59540275fbe, type: 3}
   m_Name: 
@@ -1173,6 +1180,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1713682746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713682743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9476a48f86b86df479c304b23f3e55e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fb_GUISkin: {fileID: 11400000, guid: 2128fe512a7ee5f4c8935c5bc2d21c0a, type: 2}
 --- !u!1 &1787447130
 GameObject:
   m_ObjectHideFlags: 0

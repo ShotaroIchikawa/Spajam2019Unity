@@ -10,6 +10,8 @@
     <package>com.google.firebase:firebase-database:17.0.0</package>
     <package>com.google.firebase:firebase-database-unity:6.1.1</package>
     <package>com.google.firebase:firebase-iid:[18.0.0]</package>
+    <package>com.google.firebase:firebase-messaging:18.0.0</package>
+    <package>com.google.firebase:firebase-messaging-unity:6.1.1</package>
   </packages>
   <files>
     <file>Assets/Plugins/Android/android.arch.core.common-1.0.0.jar</file>
@@ -48,5 +50,7 @@
     <file>Assets/Plugins/Android/com.google.firebase.firebase-iid-18.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-iid-interop-16.0.1.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-measurement-connector-17.0.1.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-18.0.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-unity-6.1.1</file>
   </files>
 </dependencies>
