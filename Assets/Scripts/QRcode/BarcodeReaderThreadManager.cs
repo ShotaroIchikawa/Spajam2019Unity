@@ -16,8 +16,12 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
     private int width = 640;
     private int height = 480;
     private string foundString = null;
+    private int door_state;
+    private string[] ID;
 
     private SerialPortWrapper _serialPort;
+
+    Firebase fb = new Firebase();
 
     void Awake()
     {
@@ -27,21 +31,6 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
     private void OnDisable()
     {
         _serialPort.KillThread();
-    }
-
-    void OnGUI()
-    {
-        if (GUILayout.Button("n", GUILayout.Width(200f), GUILayout.Height(60f)))
-        {
-            // 文字列nを送信
-            _serialPort.Write("n");
-        }
-
-        if (GUILayout.Button("f", GUILayout.Width(200f), GUILayout.Height(60f)))
-        {
-            // 文字列fを送信
-            _serialPort.Write("f");
-        }
     }
 
     private IEnumerator Start()
@@ -81,6 +70,17 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
         }
     }
 
+    System.Action<string> test1 = (text) =>
+    {
+        Debug.Log(text);
+        
+    };
+
+    System.Action<bool> test2 = (text) =>
+    {
+        Debug.Log(text);
+    };
+
     // Update is called once per frame
     void Update()
     {
@@ -104,19 +104,6 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
 
             // コード発見前
             // バーコード認識
-            /*
-            string codeResult = this.reader.Read(webcamTexture);
-            if (codeResult == null)
-            {
-                resultText.text = "<color=#111111>scanning...</color>";
-            }
-            else
-            {
-                foundString = codeResult;
-                resultText.text = "<color=#111111>" + codeResult + "</color>";
-            }
-            */
-            //Debug.Log(": reading");
 
             Color32[] buffer = webcamTexture.GetPixels32();
             this.reader.SetBuffer(buffer);
@@ -124,10 +111,24 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
         else
         {
             //コード発見後
+            if(door_state == 0){
+                ID = foundString.Split(',');
+                Debug.Log(ID[0]);
+                Debug.Log(ID[1]);
+                door_state = 2;
+                _serialPort.Write("n");
+            }
+            else if(door_state == 1){
+                ID = foundString.Split(',');
+                Debug.Log(ID[0]);
+                Debug.Log(ID[1]);
+                _serialPort.Write("f");
+            }
+            
             resultText.text = "<color=#111111>" + foundString + "</color>";
-            _serialPort.Write("n");
             Debug.Log(resultText.text);
             changeBtnVisible(true);
+            
         }
     }
 
@@ -149,15 +150,20 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
         }
     }
 
+
     public void onBtnRegistClick()
     {
-        openBarcode(foundString);
+        StartCoroutine(fb.CloseBox(ID[0], ID[1], test1));
+        //openBarcode(foundString);
     }
 
     public void onBtnCancelClick()
     {
+        StartCoroutine(fb.OpenBox(ID[0], ID[1], test2));
+        door_state = 1; 
+        
         changeBtnVisible(false);
         foundString = null;
-        this.reader.StartRead(webcamTexture.width, webcamTexture.height);
+        this.reader.StartRead(webcamTexture.width, webcamTexture.height); 
     }
 }
