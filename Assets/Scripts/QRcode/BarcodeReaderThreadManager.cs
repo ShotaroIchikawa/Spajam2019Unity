@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BarcodeReaderThreadManager : MonoBehaviour {
+public class BarcodeReaderThreadManager : Singleton <BarcodeReaderThreadManager> {
     public Text resultText; //読み取り結果
     public RawImage cameraPanel;
 
@@ -19,13 +19,13 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
     private int door_state;
     private string[] ID;
 
-    private SerialPortWrapper _serialPort;
+    public SerialPortWrapper _serialPort;
 
     Firebase fb = new Firebase();
 
     void Awake()
     {
-        _serialPort = new SerialPortWrapper("COM6", 9600);
+        _serialPort = new SerialPortWrapper("COM7", 9600);
     }
 
     private void OnDisable()
@@ -70,20 +70,26 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
         }
     }
 
-    System.Action<string> test1 = (text) =>
-    {
-        Debug.Log(text);
+
+
+    private IEnumerator func( ){
         
-    };
+        yield return new WaitForSeconds(3.0f);
 
-    System.Action<bool> test2 = (text) =>
-    {
-        Debug.Log(text);
-    };
+if(door_state == 0){
+ onBtnCancelClick();   
+}
+else{
+     onBtnRegistClick();   
+}
+        
+    }
 
+Coroutine c_func= null;
     // Update is called once per frame
     void Update()
     {
+        changeBtnVisible(true);
         //OnGUI();
         // Exit the app when the 'back' button is pressed.
         if (Input.GetKey(KeyCode.Escape))
@@ -100,7 +106,7 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
 
         if (foundString == null)
         {
-            resultText.text = "<color=#111111>scanning...</color>";
+            //resultText.text = "<color=#111111>scanning...</color>";
 
             // コード発見前
             // バーコード認識
@@ -112,30 +118,46 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
         {
             //コード発見後
             if(door_state == 0){
-                ID = foundString.Split(',');
+                /*ID = foundString.Split(',');
                 Debug.Log(ID[0]);
-                Debug.Log(ID[1]);
-                door_state = 2;
+                Debug.Log(ID[1]);*/
                 _serialPort.Write("n");
+                if(c_func ==null){
+                    c_func = StartCoroutine("func");
+                }
+                /*StartCoroutine(fb.CloseBox(ID[0], ID[1], test1));
+                foundString = null;
+                this.reader.StartRead(webcamTexture.width, webcamTexture.height); */
             }
             else if(door_state == 1){
-                ID = foundString.Split(',');
+               /*  ID = foundString.Split(',');
                 Debug.Log(ID[0]);
                 Debug.Log(ID[1]);
+                */
+                
                 _serialPort.Write("f");
+
+                if(c_func ==null){
+                    c_func = StartCoroutine("func");
+                }
+                /*
+                StartCoroutine(fb.OpenBox(ID[0], ID[1], test2));
+                foundString = null;
+                this.reader.StartRead(webcamTexture.width, webcamTexture.height);
+                */
             }
             
-            resultText.text = "<color=#111111>" + foundString + "</color>";
-            Debug.Log(resultText.text);
-            changeBtnVisible(true);
+            //resultText.text = "<color=#111111>" + foundString + "</color>";
+            //Debug.Log(resultText.text);
+            
             
         }
     }
 
     void changeBtnVisible(bool state)
     {
-        btnRegist.gameObject.SetActive(state);
-        btnCancel.gameObject.SetActive(state);
+        // btnRegist.gameObject.SetActive(state);
+        // btnCancel.gameObject.SetActive(state);
     }
 
     private void openBarcode(string str)
@@ -153,17 +175,38 @@ public class BarcodeReaderThreadManager : MonoBehaviour {
 
     public void onBtnRegistClick()
     {
-        StartCoroutine(fb.CloseBox(ID[0], ID[1], test1));
-        //openBarcode(foundString);
+        door_state = 0; 
+        
+        changeBtnVisible(false);
+        foundString = null;
+        this.reader.StartRead(webcamTexture.width, webcamTexture.height);
     }
 
     public void onBtnCancelClick()
     {
-        StartCoroutine(fb.OpenBox(ID[0], ID[1], test2));
+        //StartCoroutine(fb.OpenBox(ID[0], ID[1], test2));
         door_state = 1; 
         
         changeBtnVisible(false);
         foundString = null;
         this.reader.StartRead(webcamTexture.width, webcamTexture.height); 
     }
+
+/* 
+    System.Action<string> test1 = (text) =>
+    {
+        Debug.Log(text);
+        //BarcodeReaderThreadManager.Instance._serialPort.Write("n");
+        BarcodeReaderThreadManager.Instance.door_state = 1;
+
+    };
+
+    System.Action<bool> test2 = (text) =>
+    {
+        Debug.Log(text);
+        //BarcodeReaderThreadManager.Instance._serialPort.Write("f");
+        BarcodeReaderThreadManager.Instance.a();
+    };
+
+    */
 }
