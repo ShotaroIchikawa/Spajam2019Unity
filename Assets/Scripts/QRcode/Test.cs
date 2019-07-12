@@ -5,7 +5,7 @@ using UnityEngine;
 public class Test : MonoBehaviour {
 
 
-    Firebase fb = new Firebase();
+    FirebaseQR fb = new FirebaseQR();
 	// Use this for initialization
 	void Start () {
 		

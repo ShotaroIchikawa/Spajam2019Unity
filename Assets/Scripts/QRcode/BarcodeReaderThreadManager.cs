@@ -21,7 +21,7 @@ public class BarcodeReaderThreadManager : Singleton <BarcodeReaderThreadManager>
 
     public SerialPortWrapper _serialPort;
 
-    Firebase fb = new Firebase();
+    FirebaseQR fb = new FirebaseQR();
 
     void Awake()
     {

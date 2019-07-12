@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
-public class Firebase
+public class FirebaseQR
 {
 
     const string cfUrl = "https://us-central1-spajam2019-1560354088089.cloudfunctions.net/";
